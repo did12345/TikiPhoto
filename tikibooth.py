@@ -9,6 +9,7 @@ import os, time, sys
 import shutil
 import subprocess
 import datetime
+import logging
 from config import * #configuration file
 from PIL import Image
 from time import sleep
@@ -19,7 +20,7 @@ from ftplib import FTP
 sys.path.append("/home/pi/Python-Thermal-Printer")
 from Adafruit_Thermal import *
 printer = Adafruit_Thermal("/dev/serial0", 19200, timeout=5)
-
+logging.basicConfig(filename='tiki-photo.log',level=logging.DEBUG)
 
 ## Initialise PyGame
 # pygame.mixer.pre_init(44100, -16, 1, 1024*3) #PreInit Music, plays faster
@@ -97,6 +98,7 @@ def UpdateDisplay():
     # Blit everything to the screen
     screen.blit(background, (0, 0))
     pygame.display.flip()
+    logging.info('Display updated')
     return
 # End of function
  
@@ -135,6 +137,7 @@ def ShowTapZones(KonamiScreen):
 def SetBlankScreen():
     background.fill(rgbBACKGROUND)
     UpdateDisplay()
+    logging.info('Blank screen set')
     return
 # End of function. 
 
@@ -154,6 +157,7 @@ def SetInstructions():
     textpos.centerx = background.get_rect().centerx
     textpos.centery = height*2
     background.blit(Text, (textpos))  # Write the small text
+    logging.info('Instructions set')
     return
 
 def ButtonsPrint():
@@ -197,6 +201,7 @@ def QuitGracefully():
     camera.stop_preview()
     camera.close()
     pygame.quit()
+    logging.info('Quit gracefully!')
     quit()
     #GPIO.remove_event_detect(BUTTON_NEXT)
     #GPIO.remove_event_detect(BUTTON_BACK)
@@ -210,11 +215,13 @@ def KonamiCodeReset():
     global globalKonamiLast
     print('Konami Code Reset!')
     globalKonamiLast = 'None'
+    logging.info('Konami code reset!')
     return
 
 # If the Konami Code is verified, then fire!
 def KonamiCodeVerified():
     print('Konami Code Verified!!!')
+    logging.info('Konami code verified!')
     QuitGracefully()
     return
 
@@ -369,6 +376,7 @@ def SetupPhotoboothSession():
     globalSessionDir = globalSessionDir
     #os.makedirs(globalSessionDir, exist_ok=True)
     exist_ok=True
+    logging.info('Set photobooth session')
     if not os.path.exists(globalSessionDir):
         os.makedirs(globalSessionDir) 
 
@@ -378,15 +386,19 @@ def StartCameraPreview():
     camera.hflip = True
     camera.resolution = RES_PREVIEW
     camera.start_preview(alpha=PREVIEW_ALPHA)
+    logging.info('camera preview ON')
 # End of function.
 
 def TakePhoto(PhotoNum):
     global SessionID
     global globalSessionDir
+    logging.info('TAKING PHOTO nmr ', PhotoNum)
     PhotoNum = PhotoNum + 1
     PhotoPath = globalSessionDir + '/' + str(PhotoNumber) + "_" + globalEvent + '.jpg'
+    logging.info('saving to: ', PhotoPath)
     camera.stop_preview()
     camera.resolution = RES_PHOTO
+    logging.info('camera resolution: ', RES_PHOTO)
     camera.hflip = False
     # Feeling ambitions? PyGame the screen to white, turn off camera preview, take picture, change back to normal.
     background.fill(rgbWHITE)
@@ -424,6 +436,7 @@ def ResetPhotoboothSession():
     SessionID = 0
     StartCameraPreview()
     SetEffect('none')
+    logging.info('PhotoBooth Session RESET!')
 # End of function.
 
 def CopyMontageDCIM(montageFile):
@@ -431,7 +444,7 @@ def CopyMontageDCIM(montageFile):
     # Use copy not copyfile to copy a file to a directory.
     if os.path.isdir(globalDCIMDir):
         return shutil.copy(montageFile,globalDCIMDir)
-        
+        logging.info('copying file to DCIMDIR ', montageFile)
     else:
         return False
 
@@ -441,11 +454,13 @@ def RunPhotoboothSession():
     global NUMPHOTOS
     currentPhoto = 1 # File name for photo.
     SetupPhotoboothSession()
+    logging.info('Running PHOTOBOOTH SESSION')
     while currentPhoto <= NUMPHOTOS:
         RunCountdown()
         TakePhoto(currentPhoto)
         currentPhoto = currentPhoto + 1
     outFile = globalSessionDir + "/"+ time.strftime("%Y%m%d%H%M") + "_"+ globalEvent + ".jpg"
+    logging.info('outfile will be: ' outFile)
     montageFile = CreateMontage(outFile)
     CopyMontageDCIM(montageFile)
     print("Montage File: " + montageFile)
@@ -514,6 +529,7 @@ def IdleReset():
     global ShowInstructions
     global LastTap
     global RunDemo
+    logging.info('IDLE RESET!!')
     LastTap = 0
     ShowInstructions = True
     RunDemo = True
@@ -529,6 +545,7 @@ def CreateMontage(outFile):
     global globalSessionDir
     global SessionID
     global globalWorkDir
+    logging.info('Creating MONTAGE')
     #binMontage = '/usr/bin/montage'
     binMontage = '/usr/bin/convert'
 #    outFile = globalSessionDir + "/"+ time.strftime("%Y%m%d%H%M%S") + "_"+ globalEvent + ".jpg"
@@ -559,6 +576,7 @@ def CreateMontage(outFile):
     background.blit(text, textpos)
     UpdateDisplay()
     subprocess.call(binMontage + " " + argsMontage, shell=True)
+    logging.info('montage file: ', outFile)
     return outFile
     #return
 # End of function.
@@ -573,6 +591,7 @@ def PreviewMontage(MontageFile, outFile):
     print("Session ID:", SessionID)
     print("Show something.")
     preview = pygame.image.load(MontageFile)
+    logging.info('Previewing montage: ' ,MontageFile)
     PILpreview = Image.open(MontageFile)
     previewSize = PILpreview.size # returns (width, height) tuple
     #added /1.5
@@ -707,6 +726,7 @@ def Wait():
 
 ######## PRINTING
 def Printing():
+    logging.info('Printing: ' ,Thumbnail)
     QRCode = Thumbnail.replace("_THUMB.jpg", "_QR.png")
     print ("Print option initiated!!!!!")
     Today = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -756,6 +776,7 @@ def Printing():
 def PrintResize():
     # Generates the thumbnail for printing
     global Thumbnail
+   logging.info('Resizing for print: ' ,Thumbnail)
     binMontage = '/usr/bin/convert'
     ActualPhoto= str(globalSessionDir) + "/" + str(PhotoNumber) + "_" + globalEvent + '.jpg'
     ActualLogo= str(globalSessionDir) + "/" + str(globalLogo)
