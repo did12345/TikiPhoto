@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 ## TIKI PHOTO BOOOTH
 ## (C) DIDIER HARDOIN <didier@hardoin.com>
 ## v 1.0
@@ -50,16 +52,16 @@ pygame.mouse.set_cursor((8, 8), (4, 4), (24, 24, 24, 231, 231, 24, 24, 24), (0, 
 
 # Load images and scale them to the screen and tap zones. 
 # At some point find a GO! or START! icon that works with the transparency and all that. 
-ImgOK = util.initPicture('images/OK.png')
-ImgA = util.initPicture('images/A.png')
-ImgB = util.initPicture('images/B.png')
+ImgOK = initPicture('images/OK.png')
+ImgA = initPicture('images/A.png')
+ImgB = initPicture('images/B.png')
 
-ImgPointLeft = util.initPicture('images/PointLeft.png')
-ImgPointRight = util.initPicture('images/PointRight.png')
-ImgStart = util.initPicture('images/8bit.png')
+ImgPointLeft = initPicture('images/PointLeft.png')
+ImgPointRight = initPicture('images/PointRight.png')
+ImgStart = initPicture('images/8bit.png')
 
-ImgPrint = util.initPicture('images/printer.png')
-ImgRestart = util.initPicture('images/restart.png')
+ImgPrint = initPicture('images/printer.png')
+ImgRestart = initPicture('images/restart.png')
 
 # Fonts to be used.
 smallfont = pygame.font.Font(None, 50) #Small font for on screen messages.
@@ -108,31 +110,29 @@ running = 1
 SetupPhotoboothSession()
 
 while running:
-	
 	ShowTapZones()
-	
 	event = pygame.event.poll()
-	"""Fin du Programme"""
-    if event.type == pygame.QUIT: 
-        running = 0
-        raise SystemExit
-	"""Capture du click effectué"""
-    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFTMOUSEBUTTON:
-        x, y = event.pos
-        logging.info("You pressed the left mouse button at (%d, %d)" % event.pos)
-        TouchScreen(x, y)
-    """elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_F4:
-            logging.info('F4 pressed, quitting.')
-            QuitGracefully()"""
-    #elif event.type == pygame.MOUSEBUTTONUP and event.button == LEFTMOUSEBUTTON:
-    #   logging.info("You released the left mouse button at (%d, %d)" % event.pos)
-	"""Lancement du carousel de photos si aucun n'event n'est capturé"""
+	#Fin du Programme
+	if event.type == pygame.QUIT: 
+		running = 0
+		raise SystemExit
+	#Capture du click effectué
+	elif event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFTMOUSEBUTTON:
+		x, y = event.pos
+		logging.info("You pressed the left mouse button at (%d, %d)" % event.pos)
+		TouchScreen(x, y)
+	elif event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_F4:
+			logging.info('F4 pressed, quitting.')
+			QuitGracefully()
+	#elif event.type == pygame.MOUSEBUTTONUP and event.button == LEFTMOUSEBUTTON:
+	#   logging.info("You released the left mouse button at (%d, %d)" % event.pos)
+	#Lancement du carousel de photos si aucun n'event n'est capturé
 	elif RunDemo:
-        DemoFlip()
+		DemoFlip()
 
-    if LastTap != 0 and time.time()-LastTap > IDLETIME:
-        IdleReset()
+	if LastTap != 0 and time.time()-LastTap > IDLETIME:
+		IdleReset()
 	
 ########## End of Main
 
@@ -188,4 +188,4 @@ def IdleReset():
 def initPicture(path):
 	img = pygame.image.load(path)
 	img = pygame.transform.scale(img, (ZONEWIDTH, ZONEWIDTH))
-return img
+	return img

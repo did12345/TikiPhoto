@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 ## TIKI PHOTO BOOOTH
 ## (C) DIDIER HARDOIN <didier@hardoin.com>
 ## v 1.0
@@ -94,23 +96,23 @@ def SetInstructions():
 
 
 def PrintScreen():
-    #defines the text of the printscreen and buttons
-    #insert button for printing 
-    pygame.draw.rect(background, rgbGREEN, pygame.Rect(NEXT_X, 0, ZONEWIDTH, SCREEN_HEIGHT))
-    #restarting button
-    pygame.draw.rect(background, rgbRED, pygame.Rect(PREV_X, PREV_Y, ZONEWIDTH, SCREEN_HEIGHT))
-    ##text
-    text = "Imprimer ou recommencer?"
+	#defines the text of the printscreen and buttons
+	#insert button for printing 
+	pygame.draw.rect(background, rgbGREEN, pygame.Rect(NEXT_X, 0, ZONEWIDTH, SCREEN_HEIGHT))
+	#restarting button
+	pygame.draw.rect(background, rgbRED, pygame.Rect(PREV_X, PREV_Y, ZONEWIDTH, SCREEN_HEIGHT))
+	##text
+	text = "Imprimer ou recommencer?"
 	showTextMsg(text, 'small', 3)
-    return
+	return
 # End of function.
 
 def AfterPrintScreen():
-    #defines the text of the printscreen and buttons
-    ##text
-    Text = "TIKIPHOTO REUSSI!"
+	#defines the text of the printscreen and buttons
+	##text
+	Text = "TIKIPHOTO REUSSI!"
 	showTextMsg(Text, 'small', 5)
-    return
+	return
 # End of function.
 
 
@@ -122,11 +124,11 @@ def showTextMsg(text, font, size):
 	else:
 		text = smallfont.render(text, size, rgbRED)
 		
-    textpos = text.get_rect()
-    textpos.centerx = background.get_rect().centerx
-    textpos.centery = background.get_rect().centery
-    background.blit(text, textpos)
-    UpdateDisplay()
+	textpos = text.get_rect()
+	textpos.centerx = background.get_rect().centerx
+	textpos.centery = background.get_rect().centery
+	background.blit(text, textpos)
+	UpdateDisplay()
 	
 
 	

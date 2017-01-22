@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 ## configuration file for TIKIBOOTH
 ##
 ## (C) DIDIER HARDOIN <didier@hardoin.com>
@@ -34,11 +36,11 @@ CAMROTATION = 0
 CAMFREAMERATE = 15
 
 # Working Directory
+globalEvent = 'nouvel-an-2017'
 globalWorkDir = '/home/pi/git/Tikiphoto'
-globalEVENTDir = globalWorkDir + '/nouvelan-2017'
-globalEvent = 'nouvelan-2017'
+globalEVENTDir = globalWorkDir + '/' + globalEvent
 # Session Directory
-globalSessionDir = globalWorkDir + '/' + globalEvent
+globalSessionDir = globalEVENTDir
 globalLogo = '/images/tikiphoto-r2.png'
 LogoThumbnail = '/home/pi/git/Tikiphoto/images/tikiphoto_thumb.jpg'
 globalDCIMDir = globalWorkDir + '/DCIM'
@@ -179,4 +181,9 @@ RunDemoCounter = time.time()
 ActiveScreen = 'init'
 
 #Adresse de récupération des photos
-URLEvent = "http://tphoto.hardoin.com/photos/nouvel-an-2017/"
+URLEvent = "http://tphoto.hardoin.com/photos/"+globalEvent+"/"
+
+#chemin de la dernière photo capturée
+LastPhoto = ''
+LastQR = ''
+LastThumbnail = ''

@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 ## TIKI PHOTO BOOOTH
 ## (C) DIDIER HARDOIN <didier@hardoin.com>
 ## v 1.0
@@ -56,7 +58,7 @@ def SetEffect(NewEffect):
 	
 # Writes the current effect to the screen using PyGame. 
 def SetEffectText(NewEffect):
-    global globalEffectDict
-    Text = "Effect: " + globalEffectDict[NewEffect]
+	global globalEffectDict
+	Text = "Effect: " + globalEffectDict[NewEffect]
 	showTextMsg(Text, 'small', 1)
-    return
+	return
