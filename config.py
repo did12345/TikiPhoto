@@ -172,4 +172,11 @@ LastTap = 0
 
 # Run the Demo
 RunDemo = True
-RunDemoCounter = 0
+RunDemoCounter = time.time()
+
+#Permet de connaitre l'ecran actif
+#Valeurs possible : init / print
+ActiveScreen = 'init'
+
+#Adresse de récupération des photos
+URLEvent = "http://tphoto.hardoin.com/photos/nouvel-an-2017/"
