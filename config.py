@@ -9,13 +9,6 @@
 import os, time, sys
 
 ############################# Configuration Section.
-# Idle Time, in seconds
-IDLETIME = 30
-
-# Number of seconds between effect changes when the demo is running.
-# 10 seconds is pretty good, will cycle through the 12 effects every 2 minutes.
-DEMOCYCLETIME = 10
-
 # Preview Alpha, 0-255
 PREVIEW_ALPHA = 120 # OK For Black Background
 #PREVIEW_ALPHA = 140
@@ -35,19 +28,6 @@ PhotoNumber = 0
 CAMROTATION = 0
 CAMFREAMERATE = 15
 
-# Working Directory
-globalEvent = 'nouvel-an-2017'
-globalWorkDir = '/home/pi/git/Tikiphoto'
-globalEVENTDir = globalWorkDir + '/' + globalEvent
-# Session Directory
-globalSessionDir = globalEVENTDir
-globalLogo = '/images/tikiphoto-r2.png'
-LogoThumbnail = '/home/pi/git/Tikiphoto/images/tikiphoto_thumb.jpg'
-globalDCIMDir = globalWorkDir + '/DCIM'
-#Thumbnail= str(globalSessionDir) + "/" + str(PhotoNumber) + "_" + globalEvent + "_THUMB" + '.jpg'
-DestQR = globalEVENTDir + '/QR'
-#DestThumb = globalEventDir + '/Thumb'
-
 # Width of previous and next tap zones.
 # ZONEWIDTH = 100
 ZONEWIDTH = 110
@@ -64,8 +44,6 @@ MONTAGE_H= 1546
 # PRINTER VARIABLES
 PhotoResize = (512, 384)
 PhotoTitle = "TIKI Photo Booth!"
-
-
 
 
 ########################### End of Configuration Section.
@@ -133,24 +111,6 @@ DOWN_MAX_X = RIGHT_MIN_X
 DOWN_MIN_Y = SCREEN_HEIGHT - ZONEWIDTH
 DOWN_MAX_Y = SCREEN_HEIGHT
 
-# Konami Code tracker.
-globalKonamiLast = 'None'
-
-# RGB Codes
-rgbRED = (255,0,0)
-rgbGREEN = (0,255,0)
-rgbBLUE = (0,0,255)
-rgbDARKBLUE = (0,0,128)
-rgbWHITE = (255,255,255)
-rgbBLACK = (0,0,0)
-rgbPINK = (255,200,200)
-rgbGREY = (128,128,128)
-
-# Background Color!
-rgbBACKGROUND = rgbBLACK
-
-# Printer
-#printer = Adafruit_Thermal("/dev/serial0", 19200, timeout=5)
 
 # List of effects to cycle through.
 globalEffectList = ['none','sketch','posterise','emboss',
@@ -168,17 +128,31 @@ globalEffectLeng = len(globalEffectList)-1
 # When a session is in progress, touchscreen inputs are ignored. 
 SessionID = 0
 
+# Working Directory
+globalWorkDir = '/home/pi/git/Tikiphoto'
+LogoThumbnail = globalWorkDir + '/images/tikiphoto_thumb.jpg'
+globalLogo = globalWorkDir + '/images/tikiphoto-r2.png'
+globalEvent = 'test_Bru'
+globalEVENTDir = globalWorkDir + '/' + globalEvent
+globalDCIMDir = globalEVENTDir + '/DCIM'
+#globalQRDir = globalEVENTDir + '/QR'
+#globalThumbDir = globalEVENTDir + '/Thumb'
+
 # Show instructions on screen?
 ShowInstructions = True
 LastTap = 0
 
-# Run the Demo
+##### Gestion DemoFlip
+RESTART_TIME = 30
 RunDemo = True
 RunDemoCounter = time.time()
+# Number of seconds between effect changes when the demo
+DEMOCYCLETIME = 10
 
 #Permet de connaitre l'ecran actif
 #Valeurs possible : init / print
 ActiveScreen = 'init'
+LastScreen = ''
 
 #Adresse de récupération des photos
 URLEvent = "http://tphoto.hardoin.com/photos/"+globalEvent+"/"
@@ -187,3 +161,5 @@ URLEvent = "http://tphoto.hardoin.com/photos/"+globalEvent+"/"
 LastPhoto = ''
 LastQR = ''
 LastThumbnail = ''
+QRSize = 150
+ImpressionDone = False
